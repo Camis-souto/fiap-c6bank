@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 
 const BalanceContainer = styled.div`
-    padding-left: 15%;
-    width: 50%;
+    padding-left: 10%;
+    width: 100%;
     color: #f8f8f8;
     background-color: #242424;
     & > div > strong {
