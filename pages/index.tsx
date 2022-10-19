@@ -15,7 +15,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-         Bom vendo ao React com Next.js
+         Bem vindo ao React com Next.js
         </h1>
 
         <div className={styles.description}>

@@ -1,11 +1,20 @@
 import React from "react";
+import styled from "@emotion/styled";
+import SideBar from "../components/SideBar";
+import ExtractContent from "../components/ExtractContent";
 
-export default function Extractgit (){
+const ExtractContainer = styled.div`
+    display: flex;
+    width: 100%;
+    min-heigth: 100vh;
+`
+
+export default function Extract (){
     return (
-
-        <div>
-            <h1>Extract</h1>
-        </div>
+        <ExtractContainer>
+            <SideBar/>
+            <ExtractContent/>               
+        </ExtractContainer>
     )
 }
 
