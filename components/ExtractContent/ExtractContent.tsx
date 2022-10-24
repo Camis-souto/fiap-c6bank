@@ -3,13 +3,15 @@ import styled from '@emotion/styled';
 import ExtractHeader from '../ExtractHeader';
 import ExtractTotal from '../ExtractTotal';
 import ExtractData from '../ExtractData';
-import db  from '../utils/db';
+import db from '../utils/db';
 
 const ExtractContentContainer = styled.section`
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: #742365;
+    min-width: 10px;
+    background-color: black;
+    
 `;
 
 export default function ExtractContent () {

@@ -7,6 +7,7 @@ const ExtractContainer = styled.div`
     display: flex;
     width: 100%;
     min-heigth: 100vh;
+    background-color: #fff;
 `
 
 export default function Extract (){

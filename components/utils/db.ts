@@ -1,6 +1,6 @@
 import TypeDb from "../../types/TypeDb";
 
-const db:Array<TypeDb> = [
+const db: Array <TypeDb> = [
 {
     id:1,
     type: "pix",
