@@ -1,25 +1,52 @@
-import React from 'react'
+import React from 'react';
 import TypeDb from '../../types/TypeDb';
+import styled from '@emotion/styled';
 
 type ExtractDataProps = {
     db: Array<TypeDb>
 }
-
+const Table = styled.table`
+    width: 100%;
+    border-collapse: 0;
+    border-spacing: 0;
+    color: #333;
+    thead th {
+        font-weight: bold;
+        font-size: 1.2rem;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: left;
+    }
+    tbody tr{
+        line-height: 3.5rem;
+    }
+    tbody tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+`
 export default function ExtractData(props:ExtractDataProps) {
   return (
-    <div>Dados do Array
+    <Table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th colSpan={2}>Operação</th>
+            </tr>
+        </thead>
+        <tbody>
         {props.db.map((item, index) => {
             return (
-                <div key={item.id}>
-                    <p>{item.date}</p>
-                    <p>{item.description}</p>
-                    <p>{item.amount}</p>
-                    <p>{item.type}</p>
-                    <p>{item.operation}</p>
-                    
-                </div>
-            )       
+                <tr key={item.id}>
+                    <td>{item.date}</td>
+                    <td>{item.description}</td>
+                    <td>{new Intl.NumberFormat('pt-br',{style:'currency', currency:'BRL'}).format(item.amount)}</td>
+                    <td>{item.type}</td>
+                    <td>{item.operation}</td>
+                </tr>
+            )
         })}
-    </div>
+        </tbody>
+    </Table>
   )
 }

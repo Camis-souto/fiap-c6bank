@@ -1,90 +1,68 @@
-import React, { useEffect, useState, FormEvent } from 'react'
-import { Typography, Container, CssBaseline, Box, TextField, FormControlLabel, 
-Checkbox, Button, Stack} from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box, Button, Checkbox, Container, createTheme, CssBaseline, FormControlLabel, TextField, ThemeProvider, Typography} from '@mui/material';
+import axios from 'axios';
+import React,{useState, useEffect, FormEvent} from 'react';
 import Copyright from '../components/utils/Copyright';
 import Snackbar from '../components/utils/Snackbar';
 
-const theme = createTheme();
+const theme= createTheme();
 
 export default function LoginPage() {
 
-  const [nome,setNome] = useState('');
-  const [contador, setContador] = useState<number>(5);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [email, setEmail] = useState<string | undefined | null | FormDataEntryValue>('');
-  const [password, setPassaword] = useState<string | undefined | null | FormDataEntryValue>('');
-  const [open, setOpen] = useState<boolean>(false);
+const [error, setError] = useState< boolean >(false);
+const [errorMenssage, setErrorMessage] = useState<string >('');
+const [email, setEmail] = useState<string |undefined | null| FormDataEntryValue >();
+const [password, setPassword] = useState<string | undefined | null | FormDataEntryValue>();
+const [open, setOpen] = useState<boolean>(false);
 
-  //A primeira vez após carregar a página e após o render
-  //Executa também a cada alteração de estado
-  useEffect(()=>{
-    if(contador ==0){
-      document.title = `Executando useEffect a primeira vez ${contador}`;
-    }else{
-      document.title = `Executando useEffect a cada alteração ${contador}`;
-    }
-    //setContador(contador + 1);
-    console.log(`Executando useEffect a cada alteração ${contador}`);
-  },[contador]);
-
-  useEffect(()=>{
-    if(nome.length > 0 ){
-      console.log(`Executando useEffect mudando para maiúsculo${nome}`);
-    }
-  },[nome]);
-
-  useEffect(()=>{
-
-    if(password && password.length < 6){
-        setError(true);
-        setErrorMessage('A senha deve ter no mínimo 6 caracteres');
-    }else if(password) {
-        setError(false);
-        setErrorMessage('');
-        //enviar o formulário para o servidor........
-        //deu certo... vamos criar o snackbar...
+useEffect(()=>{
+  if(password && password.length < 6){
+    setError(true);
+    setErrorMessage('A senha deve ter no minimo 6 caracteres');
+  }else if(password){
+    setError(false);
+    setErrorMessage('');
+    // enviar o formulario para o servidor
+    // setOpen(true);
+    axios.post('http://localhost:3000/auth/login',{
+      login: email,
+      password
+    }).then((response)=>{
+      console.log(response);
+      if(response.status == 200){
         setOpen(true);
-    }
-
+      }
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
 },[password]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>)=>{
-      //previne o comportamento padrão do formulário, que seria recarregar a página.
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      setEmail(data.get('email'));
-      setPassaword(data.get('password'));
-  }
-
+const handleSubmit= (event: FormEvent<HTMLFormElement>)=> {
+  // Previne o comportamento padrao do formulario, que eria recarreagr a pagina
+  event.preventDefault();
+  const data= new FormData(event.currentTarget);
+  setEmail(data.get('email'));
+  setPassword(data.get('password'));
+}
   return (
-<ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box sx={{mt:8, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Typography component="h1" variant="h5">
-                Login
-              </Typography>
-            <Box component="form" onSubmit={handleSubmit}>
-              {/*<button onClick={(e)=>setContador(contador+1)}>Muda o Contador</button>
-              <button onClick={(e)=>setNome(nome.toUpperCase)}>Muda tudo para Maiúsculo</button> 
-              {'O State contador vale:' + contador}*/}
-
-          <TextField margin="normal" required variant='standard' fullWidth id="email" label="Digite o e-mail" name="email" autoComplete="email" autoFocus/>
-          <TextField margin="normal" required variant='standard' fullWidth id="password" type="password" label="Digite a senha" name="password" autoComplete="current-password" autoFocus/>
-            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar de mim" />
-            <Button type="submit" fullWidth variant="contained" sx={{mt:3, mb:2}}>Entrar</Button>
-            {error && <Typography color="error">{errorMessage}</Typography>}
-          </Box>
+    <ThemeProvider theme= {theme}>
+      <Container component="main" maxWidth= "xs">
+        <CssBaseline/>
+        <Box sx={{mt:8, display:'flex', flexDirection:'column', alignItems: 'center'}}>
+          <Typography component="h1" variant='h5'>
+            Login
+          </Typography>
+          <Box component="form" onSubmit= {handleSubmit}>
+            <TextField margin="normal" required fullWidth id="email" label="Digite o email" name="email" autoComplete="email" autoFocus/>
+            <TextField margin="normal" required fullWidth id="password" label="Digite a senha" name="password" autoComplete="password" autoFocus/>
+              <FormControlLabel control={<Checkbox value="Remember" color="primary" />} label= "Lembrar de mim"/>
+              <Button type='submit' fullWidth variant="contained" sx={{mt:3, mb:2}}>Entrar</Button>
+              {error && <Typography color="error">{errorMenssage}</Typography>}
+          </Box> 
         </Box>
-            {/*<div>login</div>*/}
-            <Copyright site="www.avanade.com.br" sx={{mt:8, mb: 4}} />
-
-            {open && <Snackbar open={open} hide={6} message="Usuário auteticado com sucesso... Aguarde..."
-            onClose={()=>setOpen(false)}/>}
-        </Container>
+        <Copyright site='www.avanade.com.br' sx= {{mt:8, mb:4}} />
+        {open && <Snackbar open={open} hide={4} message=" Usuário logado com sucesso... Aguarde..."/>}
+      </Container>
     </ThemeProvider>
-
   )
 }
